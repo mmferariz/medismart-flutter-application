@@ -125,7 +125,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                   onPressed: ()=> {
                     Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context)=> RegisterDoctor())
+                        MaterialPageRoute(builder: (context)=> expedientePaciente())
                     )
                     //signup screen
                   },
