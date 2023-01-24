@@ -1,35 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:remind_pills/LoginScreen.dart';
 
 class ForgotPassword extends StatefulWidget {
 @override
 _ForgotPassword createState() => _ForgotPassword();
 }
 class _ForgotPassword extends State<ForgotPassword> {
-GlobalKey<FormState> keyForm = new GlobalKey();
-TextEditingController correoCtrl = new TextEditingController();
+GlobalKey<FormState> keyForm = GlobalKey();
+TextEditingController correoCtrl = TextEditingController();
 
 @override
 Widget build(BuildContext context) {
-  return MaterialApp(
-    home: new Scaffold(
-      appBar: new AppBar(
-        title: new Text('Recuperar contraseña'),
+  return Scaffold(
+      appBar: AppBar(
+        title: Text('Recuperar contraseña'),
         backgroundColor: CupertinoColors.activeBlue.highContrastColor,
       ),
-      body: new SingleChildScrollView(
-        child: new Container(
-          margin: new EdgeInsets.fromLTRB(25,10,25,10),
-          child: new Form(
+      body: SingleChildScrollView(
+        child: Container(
+          margin: EdgeInsets.fromLTRB(25,10,25,10),
+          child: Form(
             key: keyForm,
             child: formUI(),
           ),
         ),
       ),
-    ),
-  );
+    );
 }
 formItemsDesign(icon, item) {
   return Padding(
@@ -51,7 +48,7 @@ Widget formUI() {
           Icons.email,
           TextFormField(
             controller: correoCtrl,
-            decoration: new InputDecoration(
+            decoration: InputDecoration(
               labelText: 'Email',
             ),
             validator: (value){
@@ -65,7 +62,7 @@ Widget formUI() {
           onTap: (){
 
           },child: Container(
-        margin: new EdgeInsets.all(20),
+        margin: EdgeInsets.all(20),
         alignment: Alignment.center,
         decoration: ShapeDecoration(
           shape: RoundedRectangleBorder(
@@ -86,15 +83,10 @@ Widget formUI() {
       )),
       GestureDetector(
           onTap: (){
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute<void>(
-                builder: (BuildContext context) =>  MyApp(),
-              ),
-            );
+            Navigator.pushReplacementNamed(context, "/login");
           },child: Container(
 
-        margin: new EdgeInsets.all(20),
+        margin: EdgeInsets.all(20),
         alignment: Alignment.center,
         decoration: ShapeDecoration(
           shape: RoundedRectangleBorder(

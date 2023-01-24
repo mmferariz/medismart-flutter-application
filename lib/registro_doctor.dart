@@ -8,37 +8,35 @@ class RegisterDoctor extends StatefulWidget {
 }
 
 class _RegisterDoctorState extends State<RegisterDoctor> {
-  GlobalKey<FormState> keyForm = new GlobalKey();
-  TextEditingController nameCtrl = new TextEditingController();
-  TextEditingController apPaCtrl = new TextEditingController();
-  TextEditingController apMaCtrl = new TextEditingController();
-  TextEditingController dateCtrl = new TextEditingController();
+  GlobalKey<FormState> keyForm = GlobalKey();
+  TextEditingController nameCtrl = TextEditingController();
+  TextEditingController apPaCtrl = TextEditingController();
+  TextEditingController apMaCtrl = TextEditingController();
+  TextEditingController dateCtrl = TextEditingController();
 
-  TextEditingController emailCtrl = new TextEditingController();
-  TextEditingController mobileCtrl = new TextEditingController();
-  TextEditingController passwordCtrl = new TextEditingController();
-  TextEditingController repeatPassCtrl = new TextEditingController();
+  TextEditingController emailCtrl = TextEditingController();
+  TextEditingController mobileCtrl = TextEditingController();
+  TextEditingController passwordCtrl = TextEditingController();
+  TextEditingController repeatPassCtrl = TextEditingController();
 
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: new Scaffold(
-        appBar: new AppBar(
-          title: new Text('Registrar Doctor'),
+    return Scaffold(
+        appBar: AppBar(
+          title: Text('Registrar Doctor'),
           backgroundColor: CupertinoColors.activeBlue.highContrastColor,
         ),
-        body: new SingleChildScrollView(
-          child: new Container(
-            margin: new EdgeInsets.fromLTRB(25, 10, 25, 10),
-            child: new Form(
+        body: SingleChildScrollView(
+          child: Container(
+            margin: EdgeInsets.fromLTRB(25, 10, 25, 10),
+            child: Form(
               key: keyForm,
               child: formUI(),
             ),
           ),
         ),
-      ),
-    );
+      );
   }
 
   formItemsDesign(icon, item) {
@@ -54,7 +52,7 @@ class _RegisterDoctorState extends State<RegisterDoctor> {
             Icons.person,
             TextFormField(
               controller: nameCtrl,
-              decoration: new InputDecoration(
+              decoration: InputDecoration(
                 label: Text.rich(
 
                     TextSpan(
@@ -76,7 +74,7 @@ class _RegisterDoctorState extends State<RegisterDoctor> {
             Icons.person,
             TextFormField(
               controller: apPaCtrl,
-              decoration: new InputDecoration(
+              decoration: InputDecoration(
                 label: Text.rich(
                     TextSpan(
                       children: <InlineSpan>[
@@ -97,7 +95,7 @@ class _RegisterDoctorState extends State<RegisterDoctor> {
             Icons.school,
             TextFormField(
               controller: apPaCtrl,
-              decoration: new InputDecoration(
+              decoration: InputDecoration(
                 label: Text.rich(
                     TextSpan(
                       children: <InlineSpan>[
@@ -118,7 +116,7 @@ class _RegisterDoctorState extends State<RegisterDoctor> {
             Icons.account_balance_sharp,
             TextFormField(
               controller: apPaCtrl,
-              decoration: new InputDecoration(
+              decoration: InputDecoration(
                 label: Text.rich(
                     TextSpan(
                       children: <InlineSpan>[
@@ -139,7 +137,7 @@ class _RegisterDoctorState extends State<RegisterDoctor> {
             Icons.email,
             TextFormField(
               controller: emailCtrl,
-              decoration: new InputDecoration(
+              decoration: InputDecoration(
                 labelText: 'Email*',
               ),
               keyboardType: TextInputType.emailAddress,
@@ -186,7 +184,7 @@ class _RegisterDoctorState extends State<RegisterDoctor> {
             onTap: (){//guardar
               print(nameCtrl.text);
             },child: Container(
-          margin: new EdgeInsets.all(20),
+          margin: EdgeInsets.all(20),
           alignment: Alignment.center,
           decoration: ShapeDecoration(
             shape: RoundedRectangleBorder(
@@ -209,7 +207,7 @@ class _RegisterDoctorState extends State<RegisterDoctor> {
             onTap: (){//cancelar
             },child: Container(
 
-          margin: new EdgeInsets.all(20),
+          margin: EdgeInsets.all(20),
           alignment: Alignment.center,
           decoration: ShapeDecoration(
             shape: RoundedRectangleBorder(

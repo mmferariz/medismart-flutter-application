@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:page_transition/page_transition.dart';
-import 'package:remind_pills/LoginScreen.dart';
+import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -67,11 +66,7 @@ class _SplashScreenState extends State<SplashScreen>
         Tween<double>(begin: 1, end: 24).animate(_screenScaleController)
           ..addStatusListener((status) {
             if (status == AnimationStatus.completed) {
-              Navigator.pushReplacement(
-                  context,
-                  PageTransition(
-                      child: const MyApp(),
-                      type: PageTransitionType.fade));
+              Navigator.pushReplacementNamed(context, "/login");
             }
           });
   }
@@ -95,9 +90,9 @@ class _SplashScreenState extends State<SplashScreen>
     _initButtonWidth(screenWidth);
     _initPositioned(screenWidth);
 
-    return CupertinoPageScaffold(
+    return Scaffold(
       backgroundColor: CupertinoColors.white,
-      child: Stack(
+      body: Stack(
         children: [
           Container(
             padding: const EdgeInsets.all(20),

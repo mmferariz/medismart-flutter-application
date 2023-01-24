@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:remind_pills/LoginScreen.dart';
-import 'package:remind_pills/citaPaciente.dart';
-import 'package:remind_pills/expedientePaciente.dart';
-class expedientePaciente extends StatefulWidget {
+import 'package:remind_pills/cita_paciente.dart';
+
+class ExpedientePaciente extends StatefulWidget {
+  const ExpedientePaciente({Key? key}) : super(key: key);
+
   @override
   _ExpedienteCliente createState() => _ExpedienteCliente();
 }
 
-class _ExpedienteCliente extends State<expedientePaciente> {
-  GlobalKey<FormState> keyForm = new GlobalKey();
+class _ExpedienteCliente extends State<ExpedientePaciente> {
+  GlobalKey<FormState> keyForm = GlobalKey();
 
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: new Scaffold(
-        appBar: new AppBar(
-          title: new Text('Expediente'),
+    return Scaffold(
+        appBar: AppBar(
+          title: Text('Expediente'),
            backgroundColor: CupertinoColors.activeBlue.highContrastColor,
         ),
         body: ListView(
@@ -56,7 +56,7 @@ class _ExpedienteCliente extends State<expedientePaciente> {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute<void>(
-                      builder: (BuildContext context) =>  expedientePaciente(),
+                      builder: (BuildContext context) =>  ExpedientePaciente(),
                     ),
                   );
                 },
@@ -71,7 +71,7 @@ class _ExpedienteCliente extends State<expedientePaciente> {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute<void>(
-                      builder: (BuildContext context) =>  citaPaciente(),
+                      builder: (BuildContext context) => const CitaPaciente(),
                     ),
                   );
                 },
@@ -83,20 +83,14 @@ class _ExpedienteCliente extends State<expedientePaciente> {
                   style: TextStyle(fontSize: 24.0),
                 ),
                 onTap: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute<void>(
-                      builder: (BuildContext context) =>  MyApp(),
-                    ),
-                  );
+                  Navigator.pushReplacementNamed(context, "/login");
                 },
               ),
             ],
           ),
       ),
         ),
-      ),
-    );
+      );
   }
 
 

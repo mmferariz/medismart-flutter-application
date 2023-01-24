@@ -36,6 +36,10 @@ dependencies:
   cupertino_icons: ^1.0.2
   intl: ^0.18.0
   page_transition: ^2.0.9
+  dio: ^4.0.0
+  rxdart: ^0.27.1
+  generic_bloc_provider: 2.0.0-nullsafety.1
+  shared_preferences: ^2.0.6
 
 dev_dependencies:
   flutter_test:

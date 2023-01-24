@@ -1,35 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:remind_pills/LoginScreen.dart';
-import 'package:remind_pills/expedientePaciente.dart';
-class citaPaciente extends StatefulWidget {
+
+class CitaPaciente extends StatefulWidget {
+  
+  const CitaPaciente({Key? key}) : super(key: key);
+
   @override
   _CitaPaciente createState() => _CitaPaciente();
 }
 
-class _CitaPaciente extends State<citaPaciente> {
-  GlobalKey<FormState> keyForm = new GlobalKey();
-  TextEditingController  nameCtrl = new TextEditingController();
-  TextEditingController  apPaCtrl = new TextEditingController();
-  TextEditingController  apMaCtrl = new TextEditingController();
-  TextEditingController dateCtrl =new TextEditingController() ;
-  TextEditingController  emailCtrl = new TextEditingController();
-  TextEditingController  mobileCtrl = new TextEditingController();
-  TextEditingController  passwordCtrl = new TextEditingController();
-  TextEditingController  repeatPassCtrl = new TextEditingController();
+class _CitaPaciente extends State<CitaPaciente> {
+  GlobalKey<FormState> keyForm =  GlobalKey();
+  TextEditingController  nameCtrl =  TextEditingController();
+  TextEditingController  apPaCtrl =  TextEditingController();
+  TextEditingController  apMaCtrl =  TextEditingController();
+  TextEditingController dateCtrl = TextEditingController() ;
+  TextEditingController  emailCtrl =  TextEditingController();
+  TextEditingController  mobileCtrl =  TextEditingController();
+  TextEditingController  passwordCtrl =  TextEditingController();
+  TextEditingController  repeatPassCtrl =  TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: new Scaffold(
-        appBar: new AppBar(
-          title: new Text('Registrar Cita'),
+    return Scaffold(
+        appBar: AppBar(
+          title: Text('Registrar Cita'),
           backgroundColor: CupertinoColors.activeBlue.highContrastColor,
         ),
-        body: new SingleChildScrollView(
-          child: new Container(
-            margin: new EdgeInsets.all(25.0),
-            child: new Form(
+        body: SingleChildScrollView(
+          child:  Container(
+            margin:  EdgeInsets.all(25.0),
+            child:  Form(
               key: keyForm,
               child: formUI(),
             ),
@@ -60,12 +61,7 @@ class _CitaPaciente extends State<citaPaciente> {
                   style: TextStyle(fontSize: 24.0),
                 ),
                 onTap: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute<void>(
-                      builder: (BuildContext context) =>  expedientePaciente(),
-                    ),
-                  );
+                  Navigator.pushReplacementNamed(context, "/expediente");
                 },
               ),
               ListTile(
@@ -78,7 +74,7 @@ class _CitaPaciente extends State<citaPaciente> {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute<void>(
-                      builder: (BuildContext context) =>  citaPaciente(),
+                      builder: (BuildContext context) => CitaPaciente(),
                     ),
                   );
                 },
@@ -90,19 +86,13 @@ class _CitaPaciente extends State<citaPaciente> {
                   style: TextStyle(fontSize: 24.0),
                 ),
                 onTap: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute<void>(
-                      builder: (BuildContext context) =>  MyApp(),
-                    ),
-                  );
+                  Navigator.pushReplacementNamed(context, "/login");
                 },
               ),
             ],
           ),
         ),
-      ),
-    );
+      );
   }
   formItemsDesign(icon, item) {
     return Padding(
@@ -130,7 +120,7 @@ class _CitaPaciente extends State<citaPaciente> {
             Icons.info,
             TextFormField(
               controller: nameCtrl,
-              decoration: new InputDecoration(
+              decoration:  InputDecoration(
                 labelText: 'Motivo*',
               ),
               validator: (value){
@@ -144,7 +134,7 @@ class _CitaPaciente extends State<citaPaciente> {
             Icons.medical_information,
             TextFormField(
               controller: apPaCtrl,
-              decoration: new InputDecoration(
+              decoration:  InputDecoration(
                 labelText: 'Descripcion*',
               ),
               validator: (value){
@@ -158,7 +148,7 @@ class _CitaPaciente extends State<citaPaciente> {
             Icons.calendar_today,
             TextFormField(
                 controller: dateCtrl,
-                decoration: new InputDecoration(
+                decoration:  InputDecoration(
                   labelText: 'Fecha de cita*',
                 ),
                 readOnly: true,
@@ -184,7 +174,7 @@ class _CitaPaciente extends State<citaPaciente> {
             onTap: (){
 
             },child: Container(
-          margin: new EdgeInsets.all(20),
+          margin:  EdgeInsets.all(20),
           alignment: Alignment.center,
           decoration: ShapeDecoration(
             shape: RoundedRectangleBorder(
@@ -207,7 +197,7 @@ class _CitaPaciente extends State<citaPaciente> {
             onTap: (){
             },child: Container(
 
-          margin: new EdgeInsets.all(20),
+          margin:  EdgeInsets.all(20),
           alignment: Alignment.center,
           decoration: ShapeDecoration(
             shape: RoundedRectangleBorder(

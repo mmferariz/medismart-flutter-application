@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:remind_pills/LoginScreen.dart';
-class recetaDoctor extends StatefulWidget {
+
+class RecetaDoctor extends StatefulWidget {
   @override
   _RecetaDoctor createState() => _RecetaDoctor();
 }
 
-class _RecetaDoctor extends State<recetaDoctor> {
+class _RecetaDoctor extends State<RecetaDoctor> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: new Scaffold(
-        appBar: new AppBar(
-          title: new Text('Registrar receta'),
+    return Scaffold(
+        appBar: AppBar(
+          title: Text('Registrar receta'),
           backgroundColor:CupertinoColors.activeBlue.highContrastColor,
         ),
-        body: new SingleChildScrollView(
-            child: new Container(
-              margin: new EdgeInsets.all(25.0),
+        body: SingleChildScrollView(
+            child: Container(
+              margin: EdgeInsets.all(25.0),
             )
         ),
         drawer: Drawer(
@@ -48,7 +47,7 @@ class _RecetaDoctor extends State<recetaDoctor> {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute<void>(
-                      builder: (BuildContext context) =>  recetaDoctor(),
+                      builder: (BuildContext context) =>  RecetaDoctor(),
                     ),
                   );
                 },
@@ -60,19 +59,13 @@ class _RecetaDoctor extends State<recetaDoctor> {
                   style: TextStyle(fontSize: 24.0),
                 ),
                 onTap: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute<void>(
-                      builder: (BuildContext context) =>  MyApp(),
-                    ),
-                  );
+                  Navigator.pushReplacementNamed(context, "/login");
                 },
               ),
             ],
           ),
         ),
-      ),
-    );
+      );
   }
 
 }

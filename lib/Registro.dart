@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:remind_pills/LoginScreen.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -9,36 +8,34 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  GlobalKey<FormState> keyForm = new GlobalKey();
-  TextEditingController  nameCtrl = new TextEditingController();
-  TextEditingController  apPaCtrl = new TextEditingController();
-  TextEditingController  apMaCtrl = new TextEditingController();
-  TextEditingController dateCtrl =new TextEditingController() ;
-  TextEditingController  emailCtrl = new TextEditingController();
-  TextEditingController  mobileCtrl = new TextEditingController();
-  TextEditingController  passwordCtrl = new TextEditingController();
-  TextEditingController  repeatPassCtrl = new TextEditingController();
+  GlobalKey<FormState> keyForm = GlobalKey();
+  TextEditingController  nameCtrl = TextEditingController();
+  TextEditingController  apPaCtrl = TextEditingController();
+  TextEditingController  apMaCtrl = TextEditingController();
+  TextEditingController dateCtrl =TextEditingController() ;
+  TextEditingController  emailCtrl = TextEditingController();
+  TextEditingController  mobileCtrl = TextEditingController();
+  TextEditingController  passwordCtrl = TextEditingController();
+  TextEditingController  repeatPassCtrl = TextEditingController();
 
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: new Scaffold(
-        appBar: new AppBar(
-          title: new Text('Registrarse'),
+    return Scaffold(
+        appBar: AppBar(
+          title: Text('Registrarse'),
           backgroundColor: CupertinoColors.activeBlue.highContrastColor,
         ),
-        body: new SingleChildScrollView(
-          child: new Container(
-            margin: new EdgeInsets.fromLTRB(25,10,25,10),
-            child: new Form(
+        body: SingleChildScrollView(
+          child: Container(
+            margin: EdgeInsets.fromLTRB(25,10,25,10),
+            child: Form(
               key: keyForm,
               child: formUI(),
             ),
           ),
         ),
-      ),
-    );
+      );
   }
 
   formItemsDesign(icon, item) {
@@ -56,7 +53,7 @@ class _RegisterPageState extends State<RegisterPage> {
         Icons.person,
         TextFormField(
             controller: nameCtrl,
-            decoration: new InputDecoration(
+            decoration: InputDecoration(
                 label: Text.rich(
 
                   TextSpan(
@@ -78,7 +75,7 @@ class _RegisterPageState extends State<RegisterPage> {
             Icons.person,
             TextFormField(
               controller: apPaCtrl,
-              decoration: new InputDecoration(
+              decoration: InputDecoration(
                 label: Text.rich(
                     TextSpan(
                       children: <InlineSpan>[
@@ -99,7 +96,7 @@ class _RegisterPageState extends State<RegisterPage> {
             Icons.calendar_today,
             TextFormField(
               controller: dateCtrl,
-              decoration: new InputDecoration(
+              decoration: InputDecoration(
                 label: Text.rich(
                     TextSpan(
                       children: <InlineSpan>[
@@ -131,7 +128,7 @@ class _RegisterPageState extends State<RegisterPage> {
             Icons.phone,
             TextFormField(
               controller: mobileCtrl,
-              decoration: new InputDecoration(
+              decoration: InputDecoration(
                 label: Text.rich(
                     TextSpan(
                       children: <InlineSpan>[
@@ -173,7 +170,7 @@ class _RegisterPageState extends State<RegisterPage> {
             Icons.email,
             TextFormField(
               controller: emailCtrl,
-              decoration: new InputDecoration(
+              decoration: InputDecoration(
                 labelText: 'Email*',
               ),
               keyboardType: TextInputType.emailAddress,
@@ -221,7 +218,7 @@ class _RegisterPageState extends State<RegisterPage> {
               print(nameCtrl.text);
               print(gender.toString());
             },child: Container(
-          margin: new EdgeInsets.all(20),
+          margin: EdgeInsets.all(20),
           alignment: Alignment.center,
           decoration: ShapeDecoration(
             shape: RoundedRectangleBorder(
@@ -241,16 +238,11 @@ class _RegisterPageState extends State<RegisterPage> {
           height: 50,
         )),
         GestureDetector(
-            onTap: (){
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute<void>(
-                  builder: (BuildContext context) =>  MyApp(),
-                ),
-              );//cancelar
-            },child: Container(
-
-          margin: new EdgeInsets.all(20),
+          onTap: (){
+            Navigator.pushReplacementNamed(context, "/login");
+          },
+          child: Container(
+          margin: EdgeInsets.all(20),
           alignment: Alignment.center,
           decoration: ShapeDecoration(
             shape: RoundedRectangleBorder(
@@ -283,7 +275,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   String? validateName(String value) {
     String pattern = r'(^[a-zA-Z ]*$)';
-    RegExp regExp = new RegExp(pattern);
+    RegExp regExp = RegExp(pattern);
     if (value.length == 0) {
       return "El nombre es necesario";
     } else if (!regExp.hasMatch(value)) {
@@ -294,7 +286,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   String? validateMobile(String value) {
     String patttern = r'(^[0-9]*$)';
-    RegExp regExp = new RegExp(patttern);
+    RegExp regExp = RegExp(patttern);
     if (value.length == 0) {
       return "El telefono es necesariod";
     } else if (value.length != 10) {
@@ -306,7 +298,7 @@ class _RegisterPageState extends State<RegisterPage> {
   String? validateEmail(String value) {
     String pattern =
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-    RegExp regExp = new RegExp(pattern);
+    RegExp regExp = RegExp(pattern);
     if (value.length == 0) {
       return "El correo es necesario";
     } else if (!regExp.hasMatch(value)) {
