@@ -25,8 +25,8 @@ class _LoginScreenState extends State<LoginScreen> {
   
   late SingletonBloc _singletonBloc;
 
-  TextEditingController _txtName = TextEditingController();
-  TextEditingController _txtPass = TextEditingController();
+  final TextEditingController _txtName = TextEditingController();
+  final TextEditingController _txtPass = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +119,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: TextStyle(fontSize: 20),
                     ),
                     onPressed: ()=> {
-                      Navigator.pushNamed(context, "/expediente")
+                      Navigator.pushNamed(context, "/register")
                       //signup screen
                     },
                   )

@@ -29,17 +29,26 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
           ?.map((e) => Cita.fromJson(e as Map<String, dynamic>))
           .toList();
 
-Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
-      'id': instance.id,
-      'username': instance.username,
-      'email': instance.email,
-      'password': instance.password,
-      'nombre': instance.nombre,
-      'apellidos': instance.apellidos,
-      'telefono': instance.telefono,
-      'gender': instance.gender,
-      'fechaNacimiento': instance.fechaNacimiento?.toIso8601String(),
-      'createdAt': instance.createdAt?.toIso8601String(),
-      'recetas': instance.recetas,
-      'citas': instance.citas,
-    };
+Map<String, dynamic> _$UserToJson(User instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('id', instance.id);
+  val['username'] = instance.username;
+  val['email'] = instance.email;
+  val['password'] = instance.password;
+  val['nombre'] = instance.nombre;
+  val['apellidos'] = instance.apellidos;
+  val['telefono'] = instance.telefono;
+  val['gender'] = instance.gender;
+  val['fechaNacimiento'] = instance.fechaNacimiento?.toIso8601String();
+  val['createdAt'] = instance.createdAt?.toIso8601String();
+  val['recetas'] = instance.recetas;
+  val['citas'] = instance.citas;
+  return val;
+}

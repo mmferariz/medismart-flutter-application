@@ -12,6 +12,7 @@ part 'user.g.dart';
 @JsonSerializable()
 class User {
 
+  @JsonKey(includeIfNull: false)
   int? id;
   String? username;
   String? email;

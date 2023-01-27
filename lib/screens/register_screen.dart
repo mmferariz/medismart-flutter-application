@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:generic_bloc_provider/generic_bloc_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:remind_pills/model/user.dart';
 import 'package:remind_pills/utils/custom_error_handler.dart';
 import 'package:remind_pills/bloc/bloc.dart';
 import 'package:remind_pills/utils/regex.dart';
@@ -18,17 +19,18 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final GlobalKey<FormState> _key = GlobalKey();
-  String gender = 'hombre';
   late SingletonBloc _singletonBloc;
 
-  TextEditingController _nameCtrl = TextEditingController();
-  TextEditingController _apPaCtrl = TextEditingController();
-  TextEditingController _apMaCtrl = TextEditingController();
-  TextEditingController _dateCtrl = TextEditingController();
+  String gender = 'Masculino';
+  DateTime? birthDate;
+  final TextEditingController _nameCtrl = TextEditingController();
+  final TextEditingController _usernameCtrl = TextEditingController();
+  final TextEditingController _dateCtrl = TextEditingController();
+  final TextEditingController _apeCtrl = TextEditingController();
 
-  TextEditingController _emailCtrl = TextEditingController();
-  TextEditingController _mobileCtrl = TextEditingController();
-  TextEditingController _passwordCtrl = TextEditingController();
+  final TextEditingController _emailCtrl = TextEditingController();
+  final TextEditingController _mobileCtrl = TextEditingController();
+  final TextEditingController _passwordCtrl = TextEditingController();
 
 
   @override
@@ -60,8 +62,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   child: Column(
                     children: [
                       CustomTextField(
+                        labelText: "Nombre de usuario",
+                        textInputType: TextInputType.text,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        textInputAction: TextInputAction.next,
+                        textCapitalization: TextCapitalization.none,
+                        controller: _usernameCtrl,
+                        regex: Regex.notEmpty,
+                        errorMessage: "Ingresa un valor",
+                      ),
+                      CustomTextField(
                         labelText: "Nombre Completo",
                         textInputType: TextInputType.text,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         textCapitalization: TextCapitalization.none,
                         controller: _nameCtrl,
@@ -69,90 +82,99 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         errorMessage: "Ingresa un valor",
                       ),
                       CustomTextField(
-                        labelText: "Apellido Materno",
+                        labelText: "Apellidos",
                         textInputType: TextInputType.text,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         textCapitalization: TextCapitalization.none,
-                        controller: _apMaCtrl,
-                        regex: Regex.notEmpty,
-                        errorMessage: "Ingresa un valor",
-                      ),
-                      CustomTextField(
-                        labelText: "Apellido Paterno",
-                        textInputType: TextInputType.text,
-                        textInputAction: TextInputAction.next,
-                        textCapitalization: TextCapitalization.none,
-                        controller: _apPaCtrl,
+                        controller: _apeCtrl,
                         regex: Regex.notEmpty,
                         errorMessage: "Ingresa un valor",
                       ),
                       CustomTextField(
                         labelText: "Correo",
                         textInputType: TextInputType.text,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         textCapitalization: TextCapitalization.none,
                         controller: _emailCtrl,
                         regex: Regex.email,
-                        errorMessage: "Ingresa un correo correcto",
-                      ),Column(children: <Widget>[
-                        Text("Genero"),
-                        RadioListTile<String>(
-                          title: const Text('Hombre'),
-                          value: 'hombre',
-                          groupValue: gender,
-                          onChanged: (value) {
-                            setState(() {
-                              gender = value!;
-                            });
-                          },
+                        errorMessage: "Ingresa un correo valido",
+                      ),
+                      Column(children: [
+                        Text(
+                          "Genero",
+                          style: TextStyle(
+                            color: Colors.indigo[900],
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500)
                         ),
-                        RadioListTile<String>(
-                          title: const Text('Mujer'),
-                          value: 'mujer',
-                          groupValue: gender,
-                          onChanged: (value) {
-                            setState(() {
-                              gender = value!;
-                            });
-                          },
+                        Row(
+                          children: [
+                            Flexible(
+                              flex: 1,
+                              child: RadioListTile<String>(
+                                title: const Text('Masculino'),
+                                value: 'Masculino',
+                                groupValue: gender,
+                                onChanged: (value) {
+                                  setState(() {
+                                    gender = value!;
+                                  });
+                                },
+                              ),
+                            ),
+                            Flexible(
+                              flex: 1,
+                              child: RadioListTile<String>(
+                                title: const Text('Femenino'),
+                                value: 'Femenino',
+                                groupValue: gender,
+                                onChanged: (value) {
+                                  setState(() {
+                                    gender = value!;
+                                  });
+                                },
+                              ),
+                            )
+                          ],
                         )
                       ]),
                       CustomTextField(
                         labelText: "Telefono",
-                        textInputType: TextInputType.text,
+                        textInputType: TextInputType.phone,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
                         textCapitalization: TextCapitalization.none,
                         controller: _mobileCtrl,
-                        regex: Regex.phone,
-                        errorMessage: "Ingresa un numero correctamente",
                       ),
-                      TextFormField(
+                      Padding(
+                        padding: const EdgeInsets.only(top: 15, bottom: 10, left: 20, right: 20),
+                        child: TextFormField(
                           controller: _dateCtrl,
-                          decoration: const InputDecoration(
-                            labelText: 'Fecha de nacimiento',
-                          ),
-                          readOnly: true,
-                          onTap: () async {
-                            DateTime? pickedDate = await showDatePicker(
-                                context: context,
-                                initialDate: DateTime.now(),
-                                firstDate:DateTime(2000),
-                                lastDate: DateTime(2101)
-                            );
-                            if(pickedDate != null ){
-                              String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate); // format date in required form here we use yyyy-MM-dd that means time is removed
-                              setState(() {
-                                _dateCtrl.text = formattedDate;
-                              });
-                            }else{
-                              print("Date is not selected");
+                            decoration: const InputDecoration(
+                              labelText: 'Fecha de nacimiento',
+                            ),
+                            readOnly: true,
+                            onTap: () async {
+                              birthDate = await showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate:DateTime(2000),
+                                  lastDate: DateTime(2101)
+                              );
+                              if(birthDate != null ){
+                                String formattedDate = DateFormat('yyyy-MM-dd').format(birthDate!); // format date in required form here we use yyyy-MM-dd that means time is removed
+                                  _dateCtrl.text = formattedDate;
+                              }
                             }
-                          }
+                        ),
                       ),
                       CustomTextField(
                         labelText: "Contraseña",
                         textInputType: TextInputType.visiblePassword,
                         textInputAction: TextInputAction.next,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         textCapitalization: TextCapitalization.none,
                         isPassword: true,
                         controller: _passwordCtrl,
@@ -190,12 +212,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
   validateForm(BuildContext context) async {
     if(_key.currentState!.validate()){
+      if(birthDate == null){
+        await showResponseDialog(context, "Selecciona tu fecha de nacimiento", ResponseType.Failed);
+        return;
+      }
       showLoadDialog(context);
       try {
+        final user = User(
+          nombre: _nameCtrl.text,
+          apellidos: _apeCtrl.text,
+          gender: gender,
+          fechaNacimiento: birthDate,
+          username: _usernameCtrl.text,
+          email: _emailCtrl.text,
+          password: _passwordCtrl.text
+        );
         Navigator.of(context).pop();
-        //User user = await _singletonBloc.login(_txtName.text, _txtPass.text);
-        //_singletonBloc.sinkUser.add(user);
-        //await showLoadDialog(context, "Inicio exitoso", ResponseTypes.Success);
+        final res = await _singletonBloc.register(user);
+        _singletonBloc.sinkUser.add(res);
+        await showResponseDialog(context, "Registro exitoso", ResponseType.Success);
         Navigator.pushNamed(context, "/expediente");
       } on CustomError catch (e) {
         showResponseDialog(context, e.message ?? "Ocurrió un error desconocido", ResponseType.Failed);
