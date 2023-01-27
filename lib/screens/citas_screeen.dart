@@ -35,7 +35,7 @@ class _CitaPaciente extends State<CitaPaciente> {
             if(snapshot.hasData){
               return ListView(
                 children: [
-                  CitaInfo(user: user),
+                 // CitaInfo(user: user),
                 ],
               );
             }
