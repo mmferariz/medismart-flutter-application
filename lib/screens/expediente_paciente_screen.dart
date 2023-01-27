@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:generic_bloc_provider/generic_bloc_provider.dart';
+import 'package:remind_pills/bloc/bloc.dart';
 import 'package:remind_pills/cita_paciente.dart';
+import 'package:remind_pills/model/user.dart';
+import 'package:remind_pills/utils/datetime_converter.dart';
 
 class ExpedientePaciente extends StatefulWidget {
   const ExpedientePaciente({Key? key}) : super(key: key);
@@ -10,22 +14,36 @@ class ExpedientePaciente extends StatefulWidget {
 }
 
 class _ExpedienteCliente extends State<ExpedientePaciente> {
-  GlobalKey<FormState> keyForm = GlobalKey();
-
+  
+  late SingletonBloc _bloc;
 
   @override
   Widget build(BuildContext context) {
+    _bloc = BlocProvider.of<SingletonBloc>(context);
     return Scaffold(
         appBar: AppBar(
-          title: Text('Expediente'),
+          title: const Text('Expediente'),
            backgroundColor: CupertinoColors.activeBlue.highContrastColor,
         ),
-        body: ListView(
-          children: <Widget>[
-            miCardImage(),
-            miCard(),
-            miCardRecetas(),
-          ],
+        body: StreamBuilder<User>(
+          stream: _bloc.streamUser,
+          builder: (context, snapshot) {
+            if(snapshot.hasError){
+              return const Card(child: Center(child: Text("Ocurrió un error inesperado")));
+            } 
+            if(snapshot.hasData){
+              return ListView(
+                children: [
+                  ProfileImage(name: "${snapshot.data?.nombre} ${snapshot.data?.apellidos}"),
+                  UserDetail(user: snapshot.data!),
+                  miCardRecetas(),
+                ],
+              );
+            }
+            return const Card(
+              child: Center(child: CircularProgressIndicator()),
+            );
+          }
         ),
         drawer: Drawer(
           child:Container(color:CupertinoColors.white,
@@ -93,53 +111,6 @@ class _ExpedienteCliente extends State<ExpedientePaciente> {
       );
   }
 
-
-  Card miCardImage() {
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      margin: EdgeInsets.all(15),
-      elevation: 10,
-      child: Column(
-        children: <Widget>[
-          Image(
-            image: NetworkImage(
-                'https://concepto.de/wp-content/uploads/2018/08/persona-e1533759204552.jpg'),
-          ),
-          Container(
-            padding: EdgeInsets.all(10),
-            child: Text('Luis Antonio Perez'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Card miCard() {
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      margin: EdgeInsets.all(15),
-      elevation: 10,
-      child: Column(
-        children: <Widget>[
-          ListTile(
-            contentPadding: EdgeInsets.fromLTRB(15, 10, 25, 0),
-            title: Text('Informacion Personal'),
-            subtitle: Text(
-                'Nacido el 21 de enero de 2000. \n'
-                    'Es hombre \n'
-                    'Su correo: prueba1@gmail.com \n'),
-            leading: Icon(Icons.person),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-            ],
-          )
-        ],
-      ),
-    );
-  }
-
   Card miCardRecetas() {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -161,6 +132,72 @@ class _ExpedienteCliente extends State<ExpedientePaciente> {
             children: <Widget>[
             ],
           )
+        ],
+      ),
+    );
+  }
+}
+
+class UserDetail extends StatelessWidget {
+
+  final User user;
+
+  const UserDetail({
+    Key? key, required this.user,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      margin: EdgeInsets.all(15),
+      elevation: 10,
+      child: Column(
+        children: <Widget>[
+          ListTile(
+            contentPadding: EdgeInsets.fromLTRB(15, 10, 25, 0),
+            title: Text('Informacion Personal'),
+            subtitle: Text(
+                """Nacido el ${ user.fechaNacimiento != null ? DateTimeConverter.longDateConversion(user.fechaNacimiento!) : "-"}.
+Sexo: ${user.gender}
+Su correo: ${user.email}"""),
+            leading: Icon(Icons.person),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+            ],
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class ProfileImage extends StatelessWidget {
+
+  final String name;
+
+  const ProfileImage({
+    Key? key, required this.name,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      margin: EdgeInsets.all(15),
+      elevation: 10,
+      child: Column(
+        children: [
+          const Image(
+            image: NetworkImage(
+                'https://picsum.photos/400'),
+          ),
+          Container(
+            padding: const EdgeInsets.all(10),
+            child: Text(name),
+          ),
         ],
       ),
     );

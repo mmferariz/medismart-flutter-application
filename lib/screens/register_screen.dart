@@ -1,26 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:generic_bloc_provider/generic_bloc_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:remind_pills/bloc/bloc.dart';
 
-class RegisterPage extends StatefulWidget {
+class RegisterScreen extends StatefulWidget {
   @override
-  _RegisterPageState createState() => _RegisterPageState();
+  _RegisterScreenState createState() => _RegisterScreenState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
+class _RegisterScreenState extends State<RegisterScreen> {
+
+  late SingletonBloc _singletonBloc;
+
   GlobalKey<FormState> keyForm = GlobalKey();
-  TextEditingController  nameCtrl = TextEditingController();
-  TextEditingController  apPaCtrl = TextEditingController();
-  TextEditingController  apMaCtrl = TextEditingController();
+  TextEditingController nameCtrl = TextEditingController();
+  TextEditingController apPaCtrl = TextEditingController();
+  TextEditingController apMaCtrl = TextEditingController();
   TextEditingController dateCtrl =TextEditingController() ;
-  TextEditingController  emailCtrl = TextEditingController();
-  TextEditingController  mobileCtrl = TextEditingController();
-  TextEditingController  passwordCtrl = TextEditingController();
-  TextEditingController  repeatPassCtrl = TextEditingController();
+  TextEditingController emailCtrl = TextEditingController();
+  TextEditingController mobileCtrl = TextEditingController();
+  TextEditingController passwordCtrl = TextEditingController();
+  TextEditingController repeatPassCtrl = TextEditingController();
 
 
   @override
   Widget build(BuildContext context) {
+    _singletonBloc = BlocProvider.of<SingletonBloc>(context);
     return Scaffold(
         appBar: AppBar(
           title: Text('Registrarse'),
@@ -55,7 +61,6 @@ class _RegisterPageState extends State<RegisterPage> {
             controller: nameCtrl,
             decoration: InputDecoration(
                 label: Text.rich(
-
                   TextSpan(
                    children: <InlineSpan>[
                      WidgetSpan(child: Text('Nombres')),

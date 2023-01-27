@@ -1,6 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:generic_bloc_provider/generic_bloc_provider.dart';
 import 'package:remind_pills/forgot_password.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:remind_pills/utils/custom_error_handler.dart';
+import 'package:remind_pills/utils/regex.dart';
+import 'package:remind_pills/widgets/custom_response_dialog.dart';
+import 'package:remind_pills/widgets/load_dialog.dart';
+
+import '../bloc/bloc.dart';
+import '../model/user.dart';
+import '../widgets/custom_text_field.dart';
 
 
 class LoginScreen extends StatefulWidget {
@@ -11,11 +20,17 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  TextEditingController nameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+
+  final GlobalKey<FormState> _key = GlobalKey();
+  
+  late SingletonBloc _singletonBloc;
+
+  TextEditingController _txtName = TextEditingController();
+  TextEditingController _txtPass = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    _singletonBloc = BlocProvider.of<SingletonBloc>(context);
     return Scaffold(
       appBar: AppBar(title: const Text("MediSmart"),
       backgroundColor: CupertinoColors.activeBlue.highContrastColor,),
@@ -39,23 +54,28 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               
               Form(
+                key: _key,
                 child: Column(
                   children: [
-                    TextField(
-                      controller: nameController,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Usuario',
-                      ),
+                    CustomTextField(
+                      labelText: "Usuario o correo",
+                      textInputType: TextInputType.text,
+                      textInputAction: TextInputAction.next,
+                      textCapitalization: TextCapitalization.none,
+                      controller: _txtName,
+                      regex: Regex.notEmpty,
+                      errorMessage: "Ingresa un usuario o correo valido",
                     ),
-                      TextField(
-                      obscureText: true,
-                      controller: passwordController,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Contraseña',
-                      ),
-                    )
+                    CustomTextField(
+                      labelText: "Usuario o correo",
+                      textInputType: TextInputType.visiblePassword,
+                      textInputAction: TextInputAction.next,
+                      textCapitalization: TextCapitalization.none,
+                      isPassword: true,
+                      controller: _txtPass,
+                      regex: Regex.password,
+                      errorMessage: "La contraseña debe contener por lo menos 6 caracteres",
+                    ),
                   ],
                 )
               ),
@@ -67,10 +87,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: const Text('Olvido la contraseña',),
               ),
               GestureDetector(
-                  onTap: (){
-                    print(nameController.text);
-                    print(passwordController.toString());
-                  },child: Container(
+                  onTap: () => validateForm(context),
+                  child: Container(
                 margin: EdgeInsets.all(20),
                 alignment: Alignment.center,
                 decoration: ShapeDecoration(
@@ -82,7 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                       begin: Alignment.topLeft, end: Alignment.bottomRight),
                 ),
-                child: Text("Login",
+                child: const Text("Login",
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 18,
@@ -108,5 +126,22 @@ class _LoginScreenState extends State<LoginScreen> {
             ],
           )),
     );
+  }
+  
+  validateForm(BuildContext context) async {
+    if(_key.currentState!.validate()){
+      showLoadDialog(context);
+      try {
+        Navigator.of(context).pop();
+        User user = await _singletonBloc.login(_txtName.text, _txtPass.text);
+        _singletonBloc.sinkUser.add(user);
+        await showResponseDialog(context, "Inicio exitoso", ResponseType.Success);
+        Navigator.pushNamed(context, "/expediente");
+      } on CustomError catch (e) {
+        showResponseDialog(context, e.message ?? "Ocurrió un error desconocido", ResponseType.Failed);
+      } catch (e) {
+        showResponseDialog(context, "Ocurrió un error desconocido", ResponseType.Failed);
+      }
+    }
   }
 }
