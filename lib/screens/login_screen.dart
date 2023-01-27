@@ -65,16 +65,18 @@ class _LoginScreenState extends State<LoginScreen> {
                       controller: _txtName,
                       regex: Regex.notEmpty,
                       errorMessage: "Ingresa un usuario o correo valido",
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
                     ),
                     CustomTextField(
                       labelText: "Usuario o correo",
                       textInputType: TextInputType.visiblePassword,
-                      textInputAction: TextInputAction.next,
+                      textInputAction: TextInputAction.done,
                       textCapitalization: TextCapitalization.none,
                       isPassword: true,
                       controller: _txtPass,
                       regex: Regex.password,
                       errorMessage: "La contraseña debe contener por lo menos 6 caracteres",
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
                     ),
                   ],
                 )
@@ -82,7 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
               
               TextButton(
                 onPressed: () {
-                  Navigator.pushReplacementNamed(context, "/forgotpass");
+                  Navigator.pushNamed(context, "/forgotpass");
                 },
                 child: const Text('Olvido la contraseña',),
               ),
@@ -136,12 +138,28 @@ class _LoginScreenState extends State<LoginScreen> {
         User user = await _singletonBloc.login(_txtName.text, _txtPass.text);
         _singletonBloc.sinkUser.add(user);
         await showResponseDialog(context, "Inicio exitoso", ResponseType.Success);
-        Navigator.pushNamed(context, "/expediente");
+        Navigator.pushReplacementNamed(context, "/expediente");
       } on CustomError catch (e) {
         showResponseDialog(context, e.message ?? "Ocurrió un error desconocido", ResponseType.Failed);
       } catch (e) {
         showResponseDialog(context, "Ocurrió un error desconocido", ResponseType.Failed);
       }
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      getLocalUser();
+    });
+  }
+
+  getLocalUser() async{
+    final User? user = await _singletonBloc.getLocalUser();
+    if(user != null){
+      _txtName.text = user.email ?? user.username!;
+      _txtPass.text = user.password!;
     }
   }
 }
