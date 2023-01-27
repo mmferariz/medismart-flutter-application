@@ -11,7 +11,7 @@ class Receta {
 
   int? id;
   String? username;
-  MedicamentoCompuesto? medicamentos;
+  List<MedicamentoCompuesto>? medicamentos;
   Medico? medico;
   DateTime? createdAt;
   

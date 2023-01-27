@@ -36,7 +36,7 @@ class Request{
       throw CustomError(code: 403, message: "Not token device");
     }
     Response response = await _dio.get(
-      "/users/me?populate[0]=recetas&populate[1]=recetas.medicamentos",
+      "/users/me?populate[0]=recetas&populate[1]=recetas.medicamentos&populate[2]=citas",
       options: Options(
         headers: {
           HttpHeaders.authorizationHeader: "Bearer $token"

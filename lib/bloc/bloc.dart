@@ -55,6 +55,14 @@ class SingletonBloc extends Bloc{
     }
   }
   
+  Future<User> getInfoUser() async{
+    try {
+      return await _repository.getInfoUser();
+    } catch (e) {
+      throw customErrorHandler(e);
+    }
+  }
+  
   @override
   void dispose() {
     _scUser.close();

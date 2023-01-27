@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:generic_bloc_provider/generic_bloc_provider.dart';
 import 'package:remind_pills/bloc/bloc.dart';
+import 'package:remind_pills/model/receta.dart';
 import 'package:remind_pills/screens/cita_paciente_screen.dart';
 import 'package:remind_pills/model/user.dart';
 import 'package:remind_pills/utils/datetime_converter.dart';
 import 'package:remind_pills/utils/exit_will_pop.dart';
+import 'package:remind_pills/widgets/custom_response_dialog.dart';
 import 'package:remind_pills/widgets/customs_drawer.dart';
 
 class ExpedientePaciente extends StatefulWidget {
@@ -36,11 +38,17 @@ class _ExpedienteCliente extends State<ExpedientePaciente> {
                 return const Card(child: Center(child: Text("Ocurrió un error inesperado")));
               } 
               if(snapshot.hasData){
-                return ListView(
+                final recetas = snapshot.data!.recetas;
+                return Column(
                   children: [
                     ProfileImage(name: "${snapshot.data?.nombre} ${snapshot.data?.apellidos}"),
                     UserDetail(user: snapshot.data!),
-                    miCardRecetas(),
+                    recetas != null && recetas.isNotEmpty ? ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: recetas.length,
+                      itemBuilder: (context, index) => RecetaTile(receta: recetas[index],),
+                    ) : const Card(child: Center(child: Text("Ocurrió un error inesperado"))),
                   ],
                 );
               }
@@ -54,7 +62,32 @@ class _ExpedienteCliente extends State<ExpedientePaciente> {
     );
   }
 
-  Card miCardRecetas() {
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {getData();});
+    super.initState();
+  }
+
+  void getData() {
+    _bloc.getInfoUser().then(
+        (value) => _bloc.sinkUser.add(value)
+      ).catchError(
+        (error) => _bloc.sinkUser.addError(error)
+      );
+  }
+
+}
+
+class RecetaTile extends StatelessWidget {
+
+  final Receta receta;
+
+  const RecetaTile({
+    Key? key, required this.receta,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       margin: EdgeInsets.all(15),
@@ -63,18 +96,16 @@ class _ExpedienteCliente extends State<ExpedientePaciente> {
         children: <Widget>[
           ListTile(
             contentPadding: EdgeInsets.fromLTRB(15, 10, 25, 0),
-            title: Text('Recetas '),
-            subtitle: Text(
-                'Medicamento 1: . \n'
-                    'Medicamento 2: \n'
-                    'Medicamento 3 :\n'),
-            leading: Icon(Icons.person),
+            title: Text(DateTimeConverter.mediumDateConversion(receta.createdAt!)),
+            subtitle: receta.medicamentos != null && receta.medicamentos!.isNotEmpty ? Column(
+              children: List.generate(receta.medicamentos!.length, (index) => Text(receta.medicamentos![index].cantidad!)),
+            ) : const Text("Sin medicamentos asignados"),
+            leading: Icon(Icons.medical_services_sharp),
+            trailing: ElevatedButton(
+              child: Icon(Icons.timer),
+              onPressed: () => showResponseDialog(context, "Recordatorio programado para ${receta.medicamentos?.first.cantidad}", ResponseType.Success),
+            ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-            ],
-          )
         ],
       ),
     );

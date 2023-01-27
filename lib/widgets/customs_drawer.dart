@@ -20,7 +20,7 @@ class CustomDrawer extends StatelessWidget {
             const UserAccountsDrawerHeader(
               currentAccountPicture: CircleAvatar(
                 backgroundImage: NetworkImage(
-                    'https://concepto.de/wp-content/uploads/2018/08/persona-e1533759204552.jpg'),
+                    'https://picsum.photos/400'),
               ),
               accountEmail: Text('jane.doe@example.com'),
               accountName: Text(
@@ -58,7 +58,20 @@ class CustomDrawer extends StatelessWidget {
               },
             ),
             ListTile(
-              leading: const Icon(Icons.apartment),
+              leading: const Icon(Icons.medical_information_sharp),
+              title: const Text(
+                'Mis citas',
+                style: TextStyle(fontSize: 24.0),
+              ),
+              onTap: () {
+                Navigator.pushReplacementNamed(
+                  context,
+                  "/citas"
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.logout),
               title: const Text(
                 'Cerrar sesion',
                 style: TextStyle(fontSize: 24.0),

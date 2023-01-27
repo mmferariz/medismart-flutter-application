@@ -9,10 +9,9 @@ part of 'receta.dart';
 Receta _$RecetaFromJson(Map<String, dynamic> json) => Receta(
       id: json['id'] as int?,
       username: json['username'] as String?,
-      medicamentos: json['medicamentos'] == null
-          ? null
-          : MedicamentoCompuesto.fromJson(
-              json['medicamentos'] as Map<String, dynamic>),
+      medicamentos: (json['medicamentos'] as List<dynamic>?)
+          ?.map((e) => MedicamentoCompuesto.fromJson(e as Map<String, dynamic>))
+          .toList(),
       medico: json['medico'] == null
           ? null
           : Medico.fromJson(json['medico'] as Map<String, dynamic>),

@@ -9,7 +9,7 @@ import 'package:remind_pills/model/receta.dart';
 
 part 'user.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class User {
 
   @JsonKey(includeIfNull: false)

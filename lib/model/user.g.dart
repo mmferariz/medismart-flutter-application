@@ -48,7 +48,7 @@ Map<String, dynamic> _$UserToJson(User instance) {
   val['gender'] = instance.gender;
   val['fechaNacimiento'] = instance.fechaNacimiento?.toIso8601String();
   val['createdAt'] = instance.createdAt?.toIso8601String();
-  val['recetas'] = instance.recetas;
-  val['citas'] = instance.citas;
+  val['recetas'] = instance.recetas?.map((e) => e.toJson()).toList();
+  val['citas'] = instance.citas?.map((e) => e.toJson()).toList();
   return val;
 }
