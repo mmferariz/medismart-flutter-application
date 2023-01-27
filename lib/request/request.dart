@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:remind_pills/model/cita.dart';
 import 'package:remind_pills/utils/custom_error_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -45,14 +46,37 @@ class Request{
     return User.fromJson(response.data);
   }
  
+  Future<Cita> registerAppointment(String? token, int? idUser, String reason, String? description) async{
+    if(token == null){
+      throw CustomError(code: 403, message: "Not token device");
+    }
+    if(idUser == null){
+      throw CustomError(code: 403, message: "No session in device");
+    }
+    Response response = await _dio.post(
+      "/citas",
+      options: Options(
+        headers: {
+          HttpHeaders.authorizationHeader: "Bearer $token"
+        }
+      ),
+      data: {
+        "data": {
+          "paciente": idUser,
+          "motivo": reason,
+          "descripcion": description
+        }
+      }
+    );
+    return Cita.fromJson(response.data["data"]["attributes"])..id = response.data["data"]["id"];
+  }
+
   Future<User> base() async{
-    SharedPreferences sp = await SharedPreferences.getInstance();
-    String? token = await sp.getString("token");
     Response response = await _dio.get(
       "/users/me?populate=*",
       options: Options(
         headers: {
-          HttpHeaders.authorizationHeader: "Bearer $token"
+          // HttpHeaders.authorizationHeader: "Bearer $token"
         }
       )
     );
